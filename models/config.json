@@ -1,0 +1,2960 @@
+{
+  "release": "CROSSTCR-SRC_weights_v1.0",
+  "source_version": "CROSSTCR_SRC_v1_20261020",
+  "source_variant": "r03fold_18eb90111b0496f1f138",
+  "seeds": [
+    17,
+    29,
+    43,
+    71,
+    101
+  ],
+  "public_expert_order": [
+    "Shared",
+    "Ranking",
+    "Construct"
+  ],
+  "stored_gate_order": [
+    "Construct",
+    "Shared",
+    "Ranking"
+  ],
+  "weights_only": true,
+  "full_data_retrained": false,
+  "pair_encoder": {
+    "input_channels": [
+      "CDR3alpha",
+      "CDR3beta",
+      "peptide",
+      "HLA_pseudosequence"
+    ],
+    "input_dimension": 640,
+    "projection": 128,
+    "transformer_layers": 2,
+    "attention_heads": 4,
+    "feedforward": 512,
+    "norm_first": true,
+    "activation": "GELU tanh approximation",
+    "pool": "mean of each segment, concatenate 512, Linear 512->128 then LayerNorm",
+    "position_encoding": "sinusoidal, within-segment positions",
+    "ranking_frozen_parent": "ranking/seed_17.pt:pair_encoder (shared by all five Ranking heads)"
+  },
+  "Shared": {
+    "head": "128->64->1; GELU tanh approximation; sigmoid output",
+    "dropout": 0.1
+  },
+  "Construct": {
+    "global_head": "128->64->1",
+    "residual_head": "128->32->1 per registered construct; GELU tanh approximation",
+    "dropout": 0.0,
+    "construct_order": [
+      "ct2_tcr_0060ccb40309e0594135",
+      "ct2_tcr_023207ded6a32f9b3fca",
+      "ct2_tcr_035dbbc51a2683663859",
+      "ct2_tcr_2b76e6b326671f995897",
+      "ct2_tcr_303502059543a57e2712",
+      "ct2_tcr_353d2c2ce57e75e49451",
+      "ct2_tcr_3836387ee231ab22b551",
+      "ct2_tcr_3b3a9bf21a8590de6122",
+      "ct2_tcr_43572d50ccd8ed214097",
+      "ct2_tcr_4f4974820fb653c14652",
+      "ct2_tcr_70df024b5f7d5445f499",
+      "ct2_tcr_add95d0e15d008000cb9",
+      "ct2_tcr_c35be5df0bbb2b3c49ac",
+      "ct2_tcr_cddbcb3b1e7e331c6e21",
+      "ct2_tcr_d407f0f148cf773df8a9",
+      "ct2_tcr_fc3aac56bdafc9f109b5"
+    ],
+    "unseen_construct": "global head only"
+  },
+  "Ranking": {
+    "head": "standardize query and support 128-vectors using qm/qs; shared bias-free 128->16 projection + tanh; concatenate difference, absolute difference, product and 12 standardized descriptors; 60->16 tanh->1",
+    "normalizers": "qm,qs,dm,ds buffers included in each head",
+    "prior": "BLOSUM62 normalized alignment similarity; residual breaks exact prior ties; higher is better",
+    "amino_acid_descriptor_columns": [
+      "hydropathy",
+      "molecular_weight",
+      "charge_KR_plus_DE_minus",
+      "aromatic_FYW",
+      "polar_STNQDEKRH"
+    ],
+    "normalized_amino_acid_descriptors": {
+      "A": [
+        0.7865794034564656,
+        -1.5892250255842253,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "C": [
+        1.0270185224169575,
+        -0.5233038191552056,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "D": [
+        -1.033888211530114,
+        -0.12623861253766522,
+        -2.23606797749979,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "E": [
+        -1.033888211530114,
+        0.3400408321558414,
+        -2.23606797749979,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "F": [
+        1.1300638591143108,
+        0.9403939836876302,
+        0.0,
+        2.3804761428476167,
+        -0.9045340337332909
+      ],
+      "G": [
+        0.03091360100920608,
+        -2.055504470277732,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "H": [
+        -0.9308428748327606,
+        0.60682197851339,
+        0.0,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "I": [
+        1.713987433732648,
+        -0.1903900157550899,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "K": [
+        -1.1712819937932522,
+        0.30873635686832523,
+        2.23606797749979,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "L": [
+        1.4735483147721562,
+        -0.1903900157550899,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "M": [
+        0.8209278490222501,
+        0.4092517459804231,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "N": [
+        -1.033888211530114,
+        -0.15897584017188654,
+        0.0,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "P": [
+        -0.3812677457802083,
+        -0.7236797198566619,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "Q": [
+        -1.033888211530114,
+        0.3073036045216201,
+        0.0,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "R": [
+        -1.3773726671879594,
+        1.2399721942043207,
+        2.23606797749979,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "S": [
+        -0.10648018125393202,
+        -1.0573647495779732,
+        0.0,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "T": [
+        -0.07213173568814747,
+        -0.5910853048844666,
+        0.0,
+        -0.42008402520840293,
+        1.1055415967851334
+      ],
+      "V": [
+        1.6109420970352943,
+        -0.6566694604485965,
+        0.0,
+        -0.42008402520840293,
+        -0.9045340337332909
+      ],
+      "W": [
+        -0.14082862681971653,
+        2.2380520783791584,
+        0.0,
+        2.3804761428476167,
+        -0.9045340337332909
+      ],
+      "Y": [
+        -0.27822240908285467,
+        1.4722542596938821,
+        0.0,
+        2.3804761428476167,
+        -0.9045340337332909
+      ]
+    },
+    "descriptor_aggregation": "For equal-length candidate and support peptides: delta = candidate-AA-vector minus support-AA-vector at each position. Concatenate mean(delta) [5], mean(abs(delta)) [5], maximum per-position Euclidean norm [1], mismatch fraction [1]. Unequal lengths unsupported.",
+    "prior_alignment": {
+      "mode": "global",
+      "substitution_matrix": "BLOSUM62",
+      "open_gap_score": -10,
+      "extend_gap_score": -0.5,
+      "normalization": "align(candidate,support)/sqrt(align(candidate,candidate)*align(support,support))"
+    },
+    "ranking_order": "Descending lexicographic (prior, mean residual over five seeds); per-seed ordering (prior, that seed residual). Convert these orderings to centered ascending midranks before fusion. Exact prior/residual ties remain tied."
+  },
+  "gate": {
+    "network": "12->16 tanh->3 softmax",
+    "input_order": "3 expert normalized mean ranks, 3 standard deviations of normalized seed ranks, 6 context features; experts in stored_gate_order",
+    "normalization": "(input-scaler.mean)/scaler.std; saved scaler included per gate",
+    "context": [
+      "log1p(number of construct supervision records)",
+      "(positive_count+1)/(record_count+2)",
+      "log1p(number of supports)",
+      "mean support Levenshtein normalized similarity",
+      "maximum support similarity",
+      "population standard deviation of support similarity"
+    ],
+    "ensemble": "Within each candidate pool, ascending centered midrank (tie block zero-based [a,b): (a+b)/(2*N)); mean raw scores then rank; seed rank SD uses ddof=0; average five gate scores and weights",
+    "support_count": 1,
+    "scores_are_probabilities": false
+  },
+  "external_foundation": {
+    "model": "facebook/esm2_t30_150M_UR50D",
+    "source": "https://huggingface.co/facebook/esm2_t30_150M_UR50D",
+    "residue_dimension": 640,
+    "bundled": false,
+    "layer": 30,
+    "dtype": "float32",
+    "special_tokens": "exclude BOS/EOS/padding"
+  },
+  "tensor_shapes": {
+    "ranking/seed_17.pt": {
+      "qm": [
+        128
+      ],
+      "qs": [
+        128
+      ],
+      "dm": [
+        12
+      ],
+      "ds": [
+        12
+      ],
+      "project.weight": [
+        16,
+        128
+      ],
+      "hidden.weight": [
+        16,
+        60
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "ranking/seed_29.pt": {
+      "qm": [
+        128
+      ],
+      "qs": [
+        128
+      ],
+      "dm": [
+        12
+      ],
+      "ds": [
+        12
+      ],
+      "project.weight": [
+        16,
+        128
+      ],
+      "hidden.weight": [
+        16,
+        60
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "ranking/seed_43.pt": {
+      "qm": [
+        128
+      ],
+      "qs": [
+        128
+      ],
+      "dm": [
+        12
+      ],
+      "ds": [
+        12
+      ],
+      "project.weight": [
+        16,
+        128
+      ],
+      "hidden.weight": [
+        16,
+        60
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "ranking/seed_71.pt": {
+      "qm": [
+        128
+      ],
+      "qs": [
+        128
+      ],
+      "dm": [
+        12
+      ],
+      "ds": [
+        12
+      ],
+      "project.weight": [
+        16,
+        128
+      ],
+      "hidden.weight": [
+        16,
+        60
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "ranking/seed_101.pt": {
+      "qm": [
+        128
+      ],
+      "qs": [
+        128
+      ],
+      "dm": [
+        12
+      ],
+      "ds": [
+        12
+      ],
+      "project.weight": [
+        16,
+        128
+      ],
+      "hidden.weight": [
+        16,
+        60
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "gate/seed_17.pt": {
+      "hidden.weight": [
+        16,
+        12
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        3,
+        16
+      ],
+      "output.bias": [
+        3
+      ]
+    },
+    "gate/seed_29.pt": {
+      "hidden.weight": [
+        16,
+        12
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        3,
+        16
+      ],
+      "output.bias": [
+        3
+      ]
+    },
+    "gate/seed_43.pt": {
+      "hidden.weight": [
+        16,
+        12
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        3,
+        16
+      ],
+      "output.bias": [
+        3
+      ]
+    },
+    "gate/seed_71.pt": {
+      "hidden.weight": [
+        16,
+        12
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        3,
+        16
+      ],
+      "output.bias": [
+        3
+      ]
+    },
+    "gate/seed_101.pt": {
+      "hidden.weight": [
+        16,
+        12
+      ],
+      "hidden.bias": [
+        16
+      ],
+      "output.weight": [
+        3,
+        16
+      ],
+      "output.bias": [
+        3
+      ]
+    },
+    "construct/seed_17.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ],
+      "residuals.0.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.0.net.0.bias": [
+        32
+      ],
+      "residuals.0.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.0.net.3.bias": [
+        1
+      ],
+      "residuals.1.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.1.net.0.bias": [
+        32
+      ],
+      "residuals.1.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.1.net.3.bias": [
+        1
+      ],
+      "residuals.2.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.2.net.0.bias": [
+        32
+      ],
+      "residuals.2.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.2.net.3.bias": [
+        1
+      ],
+      "residuals.3.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.3.net.0.bias": [
+        32
+      ],
+      "residuals.3.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.3.net.3.bias": [
+        1
+      ],
+      "residuals.4.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.4.net.0.bias": [
+        32
+      ],
+      "residuals.4.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.4.net.3.bias": [
+        1
+      ],
+      "residuals.5.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.5.net.0.bias": [
+        32
+      ],
+      "residuals.5.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.5.net.3.bias": [
+        1
+      ],
+      "residuals.6.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.6.net.0.bias": [
+        32
+      ],
+      "residuals.6.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.6.net.3.bias": [
+        1
+      ],
+      "residuals.7.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.7.net.0.bias": [
+        32
+      ],
+      "residuals.7.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.7.net.3.bias": [
+        1
+      ],
+      "residuals.8.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.8.net.0.bias": [
+        32
+      ],
+      "residuals.8.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.8.net.3.bias": [
+        1
+      ],
+      "residuals.9.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.9.net.0.bias": [
+        32
+      ],
+      "residuals.9.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.9.net.3.bias": [
+        1
+      ],
+      "residuals.10.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.10.net.0.bias": [
+        32
+      ],
+      "residuals.10.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.10.net.3.bias": [
+        1
+      ],
+      "residuals.11.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.11.net.0.bias": [
+        32
+      ],
+      "residuals.11.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.11.net.3.bias": [
+        1
+      ],
+      "residuals.12.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.12.net.0.bias": [
+        32
+      ],
+      "residuals.12.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.12.net.3.bias": [
+        1
+      ],
+      "residuals.13.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.13.net.0.bias": [
+        32
+      ],
+      "residuals.13.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.13.net.3.bias": [
+        1
+      ],
+      "residuals.14.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.14.net.0.bias": [
+        32
+      ],
+      "residuals.14.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.14.net.3.bias": [
+        1
+      ],
+      "residuals.15.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.15.net.0.bias": [
+        32
+      ],
+      "residuals.15.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.15.net.3.bias": [
+        1
+      ]
+    },
+    "construct/seed_29.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ],
+      "residuals.0.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.0.net.0.bias": [
+        32
+      ],
+      "residuals.0.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.0.net.3.bias": [
+        1
+      ],
+      "residuals.1.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.1.net.0.bias": [
+        32
+      ],
+      "residuals.1.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.1.net.3.bias": [
+        1
+      ],
+      "residuals.2.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.2.net.0.bias": [
+        32
+      ],
+      "residuals.2.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.2.net.3.bias": [
+        1
+      ],
+      "residuals.3.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.3.net.0.bias": [
+        32
+      ],
+      "residuals.3.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.3.net.3.bias": [
+        1
+      ],
+      "residuals.4.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.4.net.0.bias": [
+        32
+      ],
+      "residuals.4.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.4.net.3.bias": [
+        1
+      ],
+      "residuals.5.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.5.net.0.bias": [
+        32
+      ],
+      "residuals.5.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.5.net.3.bias": [
+        1
+      ],
+      "residuals.6.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.6.net.0.bias": [
+        32
+      ],
+      "residuals.6.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.6.net.3.bias": [
+        1
+      ],
+      "residuals.7.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.7.net.0.bias": [
+        32
+      ],
+      "residuals.7.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.7.net.3.bias": [
+        1
+      ],
+      "residuals.8.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.8.net.0.bias": [
+        32
+      ],
+      "residuals.8.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.8.net.3.bias": [
+        1
+      ],
+      "residuals.9.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.9.net.0.bias": [
+        32
+      ],
+      "residuals.9.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.9.net.3.bias": [
+        1
+      ],
+      "residuals.10.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.10.net.0.bias": [
+        32
+      ],
+      "residuals.10.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.10.net.3.bias": [
+        1
+      ],
+      "residuals.11.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.11.net.0.bias": [
+        32
+      ],
+      "residuals.11.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.11.net.3.bias": [
+        1
+      ],
+      "residuals.12.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.12.net.0.bias": [
+        32
+      ],
+      "residuals.12.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.12.net.3.bias": [
+        1
+      ],
+      "residuals.13.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.13.net.0.bias": [
+        32
+      ],
+      "residuals.13.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.13.net.3.bias": [
+        1
+      ],
+      "residuals.14.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.14.net.0.bias": [
+        32
+      ],
+      "residuals.14.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.14.net.3.bias": [
+        1
+      ],
+      "residuals.15.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.15.net.0.bias": [
+        32
+      ],
+      "residuals.15.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.15.net.3.bias": [
+        1
+      ]
+    },
+    "construct/seed_43.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ],
+      "residuals.0.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.0.net.0.bias": [
+        32
+      ],
+      "residuals.0.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.0.net.3.bias": [
+        1
+      ],
+      "residuals.1.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.1.net.0.bias": [
+        32
+      ],
+      "residuals.1.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.1.net.3.bias": [
+        1
+      ],
+      "residuals.2.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.2.net.0.bias": [
+        32
+      ],
+      "residuals.2.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.2.net.3.bias": [
+        1
+      ],
+      "residuals.3.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.3.net.0.bias": [
+        32
+      ],
+      "residuals.3.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.3.net.3.bias": [
+        1
+      ],
+      "residuals.4.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.4.net.0.bias": [
+        32
+      ],
+      "residuals.4.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.4.net.3.bias": [
+        1
+      ],
+      "residuals.5.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.5.net.0.bias": [
+        32
+      ],
+      "residuals.5.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.5.net.3.bias": [
+        1
+      ],
+      "residuals.6.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.6.net.0.bias": [
+        32
+      ],
+      "residuals.6.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.6.net.3.bias": [
+        1
+      ],
+      "residuals.7.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.7.net.0.bias": [
+        32
+      ],
+      "residuals.7.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.7.net.3.bias": [
+        1
+      ],
+      "residuals.8.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.8.net.0.bias": [
+        32
+      ],
+      "residuals.8.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.8.net.3.bias": [
+        1
+      ],
+      "residuals.9.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.9.net.0.bias": [
+        32
+      ],
+      "residuals.9.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.9.net.3.bias": [
+        1
+      ],
+      "residuals.10.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.10.net.0.bias": [
+        32
+      ],
+      "residuals.10.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.10.net.3.bias": [
+        1
+      ],
+      "residuals.11.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.11.net.0.bias": [
+        32
+      ],
+      "residuals.11.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.11.net.3.bias": [
+        1
+      ],
+      "residuals.12.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.12.net.0.bias": [
+        32
+      ],
+      "residuals.12.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.12.net.3.bias": [
+        1
+      ],
+      "residuals.13.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.13.net.0.bias": [
+        32
+      ],
+      "residuals.13.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.13.net.3.bias": [
+        1
+      ],
+      "residuals.14.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.14.net.0.bias": [
+        32
+      ],
+      "residuals.14.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.14.net.3.bias": [
+        1
+      ],
+      "residuals.15.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.15.net.0.bias": [
+        32
+      ],
+      "residuals.15.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.15.net.3.bias": [
+        1
+      ]
+    },
+    "construct/seed_71.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ],
+      "residuals.0.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.0.net.0.bias": [
+        32
+      ],
+      "residuals.0.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.0.net.3.bias": [
+        1
+      ],
+      "residuals.1.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.1.net.0.bias": [
+        32
+      ],
+      "residuals.1.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.1.net.3.bias": [
+        1
+      ],
+      "residuals.2.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.2.net.0.bias": [
+        32
+      ],
+      "residuals.2.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.2.net.3.bias": [
+        1
+      ],
+      "residuals.3.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.3.net.0.bias": [
+        32
+      ],
+      "residuals.3.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.3.net.3.bias": [
+        1
+      ],
+      "residuals.4.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.4.net.0.bias": [
+        32
+      ],
+      "residuals.4.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.4.net.3.bias": [
+        1
+      ],
+      "residuals.5.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.5.net.0.bias": [
+        32
+      ],
+      "residuals.5.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.5.net.3.bias": [
+        1
+      ],
+      "residuals.6.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.6.net.0.bias": [
+        32
+      ],
+      "residuals.6.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.6.net.3.bias": [
+        1
+      ],
+      "residuals.7.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.7.net.0.bias": [
+        32
+      ],
+      "residuals.7.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.7.net.3.bias": [
+        1
+      ],
+      "residuals.8.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.8.net.0.bias": [
+        32
+      ],
+      "residuals.8.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.8.net.3.bias": [
+        1
+      ],
+      "residuals.9.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.9.net.0.bias": [
+        32
+      ],
+      "residuals.9.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.9.net.3.bias": [
+        1
+      ],
+      "residuals.10.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.10.net.0.bias": [
+        32
+      ],
+      "residuals.10.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.10.net.3.bias": [
+        1
+      ],
+      "residuals.11.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.11.net.0.bias": [
+        32
+      ],
+      "residuals.11.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.11.net.3.bias": [
+        1
+      ],
+      "residuals.12.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.12.net.0.bias": [
+        32
+      ],
+      "residuals.12.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.12.net.3.bias": [
+        1
+      ],
+      "residuals.13.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.13.net.0.bias": [
+        32
+      ],
+      "residuals.13.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.13.net.3.bias": [
+        1
+      ],
+      "residuals.14.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.14.net.0.bias": [
+        32
+      ],
+      "residuals.14.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.14.net.3.bias": [
+        1
+      ],
+      "residuals.15.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.15.net.0.bias": [
+        32
+      ],
+      "residuals.15.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.15.net.3.bias": [
+        1
+      ]
+    },
+    "construct/seed_101.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ],
+      "residuals.0.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.0.net.0.bias": [
+        32
+      ],
+      "residuals.0.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.0.net.3.bias": [
+        1
+      ],
+      "residuals.1.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.1.net.0.bias": [
+        32
+      ],
+      "residuals.1.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.1.net.3.bias": [
+        1
+      ],
+      "residuals.2.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.2.net.0.bias": [
+        32
+      ],
+      "residuals.2.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.2.net.3.bias": [
+        1
+      ],
+      "residuals.3.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.3.net.0.bias": [
+        32
+      ],
+      "residuals.3.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.3.net.3.bias": [
+        1
+      ],
+      "residuals.4.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.4.net.0.bias": [
+        32
+      ],
+      "residuals.4.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.4.net.3.bias": [
+        1
+      ],
+      "residuals.5.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.5.net.0.bias": [
+        32
+      ],
+      "residuals.5.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.5.net.3.bias": [
+        1
+      ],
+      "residuals.6.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.6.net.0.bias": [
+        32
+      ],
+      "residuals.6.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.6.net.3.bias": [
+        1
+      ],
+      "residuals.7.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.7.net.0.bias": [
+        32
+      ],
+      "residuals.7.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.7.net.3.bias": [
+        1
+      ],
+      "residuals.8.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.8.net.0.bias": [
+        32
+      ],
+      "residuals.8.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.8.net.3.bias": [
+        1
+      ],
+      "residuals.9.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.9.net.0.bias": [
+        32
+      ],
+      "residuals.9.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.9.net.3.bias": [
+        1
+      ],
+      "residuals.10.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.10.net.0.bias": [
+        32
+      ],
+      "residuals.10.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.10.net.3.bias": [
+        1
+      ],
+      "residuals.11.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.11.net.0.bias": [
+        32
+      ],
+      "residuals.11.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.11.net.3.bias": [
+        1
+      ],
+      "residuals.12.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.12.net.0.bias": [
+        32
+      ],
+      "residuals.12.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.12.net.3.bias": [
+        1
+      ],
+      "residuals.13.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.13.net.0.bias": [
+        32
+      ],
+      "residuals.13.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.13.net.3.bias": [
+        1
+      ],
+      "residuals.14.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.14.net.0.bias": [
+        32
+      ],
+      "residuals.14.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.14.net.3.bias": [
+        1
+      ],
+      "residuals.15.net.0.weight": [
+        32,
+        128
+      ],
+      "residuals.15.net.0.bias": [
+        32
+      ],
+      "residuals.15.net.3.weight": [
+        1,
+        32
+      ],
+      "residuals.15.net.3.bias": [
+        1
+      ]
+    },
+    "shared/seed_17.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ]
+    },
+    "shared/seed_29.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ]
+    },
+    "shared/seed_43.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ]
+    },
+    "shared/seed_71.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ]
+    },
+    "shared/seed_101.pt": {
+      "pair.projection.weight": [
+        128,
+        640
+      ],
+      "pair.projection.bias": [
+        128
+      ],
+      "pair.segment_embedding.weight": [
+        4,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.0.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.0.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.0.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.0.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.0.norm2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_weight": [
+        384,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.in_proj_bias": [
+        384
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.weight": [
+        128,
+        128
+      ],
+      "pair.encoder.layers.1.self_attn.out_proj.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.linear1.weight": [
+        512,
+        128
+      ],
+      "pair.encoder.layers.1.linear1.bias": [
+        512
+      ],
+      "pair.encoder.layers.1.linear2.weight": [
+        128,
+        512
+      ],
+      "pair.encoder.layers.1.linear2.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm1.bias": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.weight": [
+        128
+      ],
+      "pair.encoder.layers.1.norm2.bias": [
+        128
+      ],
+      "pair.pool_projection.0.weight": [
+        128,
+        512
+      ],
+      "pair.pool_projection.0.bias": [
+        128
+      ],
+      "pair.pool_projection.1.weight": [
+        128
+      ],
+      "pair.pool_projection.1.bias": [
+        128
+      ],
+      "pair.head.0.weight": [
+        64,
+        128
+      ],
+      "pair.head.0.bias": [
+        64
+      ],
+      "pair.head.3.weight": [
+        1,
+        64
+      ],
+      "pair.head.3.bias": [
+        1
+      ],
+      "head.net.0.weight": [
+        64,
+        128
+      ],
+      "head.net.0.bias": [
+        64
+      ],
+      "head.net.3.weight": [
+        1,
+        64
+      ],
+      "head.net.3.bias": [
+        1
+      ]
+    }
+  }
+}
