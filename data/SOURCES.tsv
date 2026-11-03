@@ -1,0 +1,5 @@
+file	resource	version_or_snapshot	source	bytes	sha256
+CROSSTCR_v1.4.0/TCR_CrossReactive_pMHCs.v1.4.0.xlsx	CROSSTCR	v1.4.0; local archive 2026-09-26	https://i.uestc.edu.cn/CROSSTCR/	3922092	952f380b03ced1d5d1a73de4f111f9cf98d84078fb9b752b870f30c753cdbd64
+CROSSTCR_v1.4.0/TCR_CrossReactive_pMHCs.v1.4.0.json	CROSSTCR	v1.4.0; local archive 2026-09-26	https://i.uestc.edu.cn/CROSSTCR/	25085072	9d52f415c4663d77575a33b1e635ed4bfb7912e06efc1dd85de928d3a76900f4
+BATCAVE/TCR_pMHCI_mutational_scan_database.xlsx	BATCAVE	local snapshot 2026-09-27; upstream release unspecified	https://github.com/meyer-lab-cshl/BATMAN-paper/tree/main/results_batman/tcr_epitope_datasets/mutational_scan_datasets/database	1356746	9b1292a95b287b94ccf94a4f6888349fd26f02cb55112c43ed5760f1a32cde91
+BATCAVE/TCR_pMHCII_mutational_scan_database.xlsx	BATCAVE	local snapshot 2026-09-27; upstream release unspecified	https://github.com/meyer-lab-cshl/BATMAN-paper/tree/main/results_batman/tcr_epitope_datasets/mutational_scan_datasets/database	330155	9edc0e8ceb82afa5b4402a573282d3a5f3e5d3f38e794039ed5857e6feef86fc
