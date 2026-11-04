@@ -1,15 +1,17 @@
-# Pretrained models
+# Model architecture
 
-CROSSTCR-SRC integrates Shared, Ranking and Construct experts through a learned fusion gate.
+CROSSTCR-SRC combines Shared, Ranking and Construct experts with a learned fusion gate.
 
-[Download the model package](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/download/v1.0/CROSSTCR-SRC_weights_v1.0.zip).
+| Component | Implementation |
+| --- | --- |
+| Pair encoder | [pair_model.py](../code/pair_model.py) and [expert_model.py](../code/expert_model.py) |
+| Shared and Construct experts | [train_experts.py](../code/train_experts.py) |
+| Ranking head and fusion gate | [fusion_core.py](../code/fusion_core.py) |
+| Pair-model training | [train_pair.py](../code/train_pair.py) |
+| Fusion-gate training | [train_fusion.py](../code/train_fusion.py) |
 
-The package contains shared/, ranking/, construct/ and gate/ directories, each with five seeds: 17, 29, 43, 71 and 101. The frozen Ranking pair encoder is stored in ranking/seed_17.pt and shared by all five Ranking heads.
+[config.json](config.json) records the network dimensions, training defaults, feature definitions and ensemble conventions. Pair-model pretraining uses five seeds: 42, 2026, 20260713, 31415 and 27182. SRC expert and gate training uses seeds 17, 29, 43, 71 and 101.
 
-[config.json](config.json) records the architecture, feature definitions, scaling, expert ordering and ensemble conventions.
+Shared learns recognition patterns across pairs. Construct adds a residual head for each registered TCR construct. Ranking combines a support–candidate similarity prior with a learned residual. The fusion gate combines normalized expert ranks and context features.
 
-## Version
-
-The checkpoints correspond to research variant r03fold_18eb90111b0496f1f138 in CROSSTCR_SRC_v1_20261020, the original SRC variant underlying the AFP application. The archived parameters retain the original numerical values.
-
-See [methodology](../docs/methodology.md) for inputs and fusion and [checksums](../checksums/SHA256SUMS.txt) for archive verification.
+See [methodology](../docs/methodology.md) for the modeling framework and [downloads](../README.md#downloads) for the code archive.
