@@ -19,6 +19,16 @@ A learned fusion gate integrates the three experts. The primary modeling scope i
 ```text
 CROSSTCR-SRC/
 ├── README.md
+├── code/
+│   ├── train_pair.py
+│   ├── train_experts.py
+│   ├── train_fusion.py
+│   ├── afp_analysis.py
+│   ├── pair_model.py
+│   ├── expert_model.py
+│   ├── fusion_core.py
+│   ├── training_utils.py
+│   └── requirements.txt
 ├── models/
 │   ├── README.md
 │   └── config.json
@@ -31,8 +41,9 @@ CROSSTCR-SRC/
     └── SHA256SUMS.txt
 ```
 
-- [Models](models/README.md): model organization, configuration and download.
-- [Data](data/README.md): source datasets, versions and download.
+- [Code](code/): pair-model training, expert training, fusion-gate training and AFP score-table analysis.
+- [Models](models/README.md): architecture and training configuration.
+- [Data](data/README.md): source datasets and AFP case-study data.
 - [Methodology](docs/methodology.md): inputs, three experts and fusion.
 - [Checksums](checksums/SHA256SUMS.txt): archive integrity verification.
 
@@ -40,8 +51,9 @@ CROSSTCR-SRC/
 
 | Resource | Download |
 | --- | --- |
-| Pretrained models | [CROSSTCR-SRC_weights_v1.0.zip](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/download/v1.0/CROSSTCR-SRC_weights_v1.0.zip) |
+| Training and AFP analysis code | [CROSSTCR-SRC_code_v1.0.zip](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/download/v1.0/CROSSTCR-SRC_code_v1.0.zip) |
 | CROSSTCR and BATCAVE source datasets | [CROSSTCR-SRC_source_data_v1.0.zip](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/download/v1.0/CROSSTCR-SRC_source_data_v1.0.zip) |
+| AFP case-study data | [CROSSTCR-SRC_AFP_case_data_v1.0.zip](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/download/v1.0/CROSSTCR-SRC_AFP_case_data_v1.0.zip) |
 
 See the [v1.0 release](https://github.com/bioinfowenz/CROSSTCR-SRC/releases/tag/v1.0) for the complete download list.
 
